@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 
 import {
-    createDrawerNavigator, DrawerContentScrollView, useDrawerProgress
+    createDrawerNavigator, DrawerContentScrollView, useDrawerProgress, useDrawerStatus
 } from '@react-navigation/drawer';
 import { connect } from 'react-redux';
 import { setSelectedTab } from '../stores/tab/tabAction';
@@ -58,10 +58,18 @@ const CustomDrawerItem = ({ label, icon, isFocused, onPress }) => {
     )
 }
 
-const CustomDrawerContent = ({ navigation, selectedTab, setSelectedTab }) => {
+const CustomDrawerContent = ({ navigation, selectedTab, setSelectedTab, setProgress }) => {
+    const dstatus = useDrawerStatus()
     const closeDrawer = () => {
         navigation.closeDrawer()
     }
+    React.useEffect(() => {
+        if (dstatus === "open") {
+            setProgress(1)
+        } else {
+            setProgress(0)
+        }
+    }, [dstatus])
 
     return (
         <DrawerContentScrollView
@@ -195,6 +203,7 @@ const CustomDrawerContent = ({ navigation, selectedTab, setSelectedTab }) => {
 }
 
 const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
+    const [progress, setProgress] = useState(new Animated.Value(0))
     return (
         <View
             style={{
@@ -227,12 +236,14 @@ const CustomDrawer = ({ selectedTab, setSelectedTab }) => {
                             navigation={props.navigation}
                             selectedTab={selectedTab}
                             setSelectedTab={setSelectedTab}
+                            setProgress={setProgress}
                         />
                     )
                 }}
             >
                 <Drawer.Screen name='MainLayout'>
                     {props => <MainLayout {...props}
+                        progress={progress}
                     />}
 
                 </Drawer.Screen>
