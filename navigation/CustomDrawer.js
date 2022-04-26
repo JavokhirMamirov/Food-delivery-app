@@ -1,11 +1,11 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 import {
     View, Text, Image, TouchableOpacity
 } from 'react-native';
 
 import {
-    createDrawerNavigator, DrawerContentScrollView
+    createDrawerNavigator, DrawerContentScrollView, useDrawerProgress
 } from '@react-navigation/drawer';
 
 import { MainLayout } from '../screens';
@@ -18,7 +18,7 @@ import {
     icons,
     dummyData
 } from '../constants';
-import Animated from 'react-native-reanimated';
+
 
 
 const Drawer = createDrawerNavigator();
@@ -56,6 +56,10 @@ const CustomDrawerItem = ({ label, icon }) => {
 }
 
 const CustomDrawerContent = ({ navigation }) => {
+    const closeDrawer = () => {
+        navigation.closeDrawer()
+    }
+
     return (
         <DrawerContentScrollView
             scrollEnabled={true}
@@ -78,7 +82,7 @@ const CustomDrawerContent = ({ navigation }) => {
                             alignContent: 'center',
                             alignItems: 'center'
                         }}
-                        onPress={() => navigation.closeDrawer()}
+                        onPress={() => closeDrawer()}
                     >
                         <Image
                             source={icons.cross}
@@ -161,16 +165,6 @@ const CustomDrawerContent = ({ navigation }) => {
 }
 
 const CustomDrawer = () => {
-    const [progress, setPrograss] = React.useState(new Animated.Value(0))
-    const scale = Animated.interpolateNode(progress, {
-        inputRange: [0, 1],
-        outputRange: [1, 0.8]
-    })
-    const borderRadius = Animated.interpolateNode(progress, {
-        inputRange: [0, 1],
-        outputRange: [1, 26]
-    })
-    const animatedStyle = { borderRadius, transform: [{ scale }] }
     return (
         <View
             style={{
@@ -187,6 +181,7 @@ const CustomDrawer = () => {
                         paddingRight: 20,
                         backgroundColor: 'transparent'
                     },
+
                     drawerType: 'slide',
                     overlayColor: 'transparent',
                     sceneContainerStyle: {
@@ -194,11 +189,9 @@ const CustomDrawer = () => {
                     },
                     headerShown: false,
                 }}
+                useLegacyImplementation={false}
                 initialRouteName="MainLayout"
                 drawerContent={props => {
-                    setTimeout(() => {
-                        setPrograss(props.progress)
-                    }, 0)
                     return (
                         <CustomDrawerContent
                             navigation={props.navigation}
@@ -208,7 +201,6 @@ const CustomDrawer = () => {
             >
                 <Drawer.Screen name='MainLayout'>
                     {props => <MainLayout {...props}
-                        drawerAnimationStyle={animatedStyle}
                     />}
 
                 </Drawer.Screen>
