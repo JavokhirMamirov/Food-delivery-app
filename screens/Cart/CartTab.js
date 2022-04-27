@@ -6,7 +6,9 @@ import {
 
 const CartTab = () => {
     return (
-        <View>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text>CartTab</Text>
+
         </View>
     )
 }
