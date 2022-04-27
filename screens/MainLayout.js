@@ -20,7 +20,7 @@ import {
 } from '../constants';
 import LinearGradient from 'react-native-linear-gradient';
 import { Home, Search, CartTab, Favourite, Notification } from '../screens'
-import { Header } from './components';
+import { Header } from '../components';
 
 
 const TabButton = ({ label, icon, isFocused, onPress, outerContainerStyle,
