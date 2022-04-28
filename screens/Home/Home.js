@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { FONTS, SIZES, COLORS, icons, dummyData } from '../../constants';
 import { HorizontalFoodCard, VerticalFoodCard } from "../../components"
-
+import { FilterModal } from '../'
 
 const Section = ({ title, onPress, children }) => {
     return (
@@ -38,7 +38,7 @@ const Home = () => {
     const [recommends, setRecommends] = React.useState([])
     const [menuList, setMenuList] = React.useState([])
     const [popular, setPopular] = React.useState([])
-
+    const [showFilterModal, setShowFilterModal] = React.useState(false)
     React.useEffect(() => {
         handleChangeCategory(selectedCategoryId, selectedMenuType)
     }, [])
@@ -99,7 +99,7 @@ const Home = () => {
                 />
                 {/* Filter Button */}
                 <TouchableOpacity
-
+                    onPress={() => setShowFilterModal(true)}
                 >
                     <Image
                         source={icons.filter}
@@ -310,6 +310,14 @@ const Home = () => {
         >
             {/* Search  */}
             {renderSearch()}
+
+            {/* Filter  */}
+            {showFilterModal &&
+                <FilterModal
+                    isVisible={showFilterModal}
+                    onClose={() => setShowFilterModal(false)}
+                />
+            }
 
             {/* List  */}
             <FlatList

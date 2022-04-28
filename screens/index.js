@@ -2,6 +2,7 @@ import MainLayout from "./MainLayout"
 
 // Home
 import Home from "./Home/Home"
+import FilterModal from "./Home/FIlterModal"
 
 // Search
 import Search from "./Search/Search";
@@ -21,5 +22,6 @@ export {
     Search,
     CartTab,
     Favourite,
-    Notification
+    Notification,
+    FilterModal
 }
